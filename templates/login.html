@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #0d0d0d;
+            color: #00ff00;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .logincon {
+            background-color: #111111;
+            border: 1px solid #00ff00;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px #00ff00;
+            width: 300px;
+        }
+
+        .logincon h2 {
+            margin-bottom: 20px;
+            text-align: center;
+            color: #00ff00;
+        }
+
+        .logincon input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #00ff00;
+            border-radius: 5px;
+            background-color: #0d0d0d;
+            color: #00ff00;
+        }
+
+        .logincon button {
+            width: 100%;
+            padding: 10px;
+            background-color: #0d0d0d;
+            color: #00ff00;
+            border: 1px solid #00ff00;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .logincon button:hover {
+            background-color: #00ff00;
+            color: #0d0d0d;
+        }
+
+        .rmsg {
+            text-align: center;
+            color: red;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+                                                                         
+    <div class="logincon">
+
+        <h2>Login</h2>
+
+        <div class="rmsg">{{ rmsg }}</div>
+           
+        <form method="POST">
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <button type="submit">Login</button>
+        </form>
+        <br>
+        <a href="/admin">/admin</a>
+    </div>
+  <!--   -->
+</body>
+</html>

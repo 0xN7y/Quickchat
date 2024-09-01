@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login</title>
+    <style>
+        body {
+            background-color: black;
+            color: #00FF00;
+            font-family: "Courier New", Courier, monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .login-container {
+            background-color: #1a1a1a;
+            padding: 20px;
+            border: 1px solid #00FF00;
+            width: 300px;
+            text-align: center;
+        }
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            background-color: black;
+            border: 1px solid #00FF00;
+            color: #00FF00;
+            font-family: "Courier New", Courier, monospace;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: black;
+            border: 1px solid #00FF00;
+            color: #00FF00;
+            font-family: "Courier New", Courier, monospace;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #00FF00;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h1>Admin Login</h1>
+        <form method="POST">
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <button type="submit">Login</button>
+            <p style="color: red;">{{ rmsg }}</p>
+        </form>
+    </div>
+</body>
+</html>

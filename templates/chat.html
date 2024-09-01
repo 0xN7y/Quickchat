@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Room101</title>
+    <style>
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #0d0d0d;
+            color: #00ff00;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .msgcontainer {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            border-bottom: 1px solid #00ff00;
+        }
+
+        .chat-message {
+            margin-bottom: 10px;
+            background-color: #111111;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px #00ff00;
+        }
+
+        .chat-message img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+
+        .msginp {
+            display: flex;
+            padding: 10px;
+            background-color: #111111;
+            border-top: 1px solid #00ff00;
+        }
+
+        .msginpfr {
+            flex: 1;
+            padding: 10px;
+            background-color: #0d0d0d;
+            color: #00ff00;
+            border: 1px solid #00ff00;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        .msginpfr::placeholder {
+            color: #008f11;
+        }
+
+        .finp {
+            padding: 10px;
+            background-color: #0d0d0d;
+            color: #00ff00;
+            border: 1px solid #00ff00;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .fireindahole {
+            padding: 10px 20px;
+            background-color: #0d0d0d;
+            color: #00ff00;
+            border: 1px solid #00ff00;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .fireindahole:hover {
+            background-color: #00ff00;
+            color: #0d0d0d;
+        }
+        .tstmp {
+            font-size: smaller;
+            font-size: 10px;
+            margin-top: 10px;
+            
+        }
+        p {
+            font-size: 90%;
+        }
+    </style>
+</head>
+<body>
+    <div class="msgcontainer" id="msgconID"></div>
+
+    <form class="msginp" method="POST" enctype="multipart/form-data">
+        <input type="text" name="message" class="msginpfr" placeholder="messages.." required>
+        <input type="file" name="file" class="finp">
+        <button type="submit" class="fireindahole">Send</button>
+    </form>
+
+    <script>
+ 
+        function readableTimestamp(timestamp) {
+            const date = new Date(timestamp);
+            return date.toLocaleString(); 
+        }
+        async function hashObject(obj) {
+            const msgBuffer = new TextEncoder().encode(JSON.stringify(obj));  // toUTF-8
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);  // Hash the message
+            const hashArray = Array.from(new Uint8Array(hashBuffer));             //  buffer to byte array
+            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');  // bytes to hex string
+            return hashHex;
+        }
+        
+        let nw = 0;
+        function loadmsg() {
+
+            
+
+            fetch('/loadmsg')
+                .then(response => response.json())
+                .then(data => {
+                    const msgconID = document.getElementById('msgconID');
+                    msgconID.innerHTML = ''; 
+
+                    data.forEach(msg => {
+                        const formattedTime = readableTimestamp(msg.timestamp);
+                        
+                        const chatmessage = document.createElement("div");
+                        chatmessage.classList.add("chat-message");
+
+                        let st = document.createElement("STRONG")
+                        st.innerText = "<"+msg.username +">";
+
+                        let ms = document.createElement("p")
+                        ms.innerText = msg.message;
+
+
+                        const timestamp = document.createElement("div");
+                        timestamp.classList.add("tstmp");
+                        timestamp.innerText = formattedTime;
+
+                        chatmessage.appendChild(st);
+                        chatmessage.appendChild(ms)
+                        chatmessage.appendChild(timestamp);
+                        
+
+
+
+
+
+
+                        if (msg.filename) {
+                            let br = document.createElement("br");
+                            let link = document.createElement("a");
+                            link.href = "/uploads/"+msg.filename; // fix
+                            link.setAttribute("target", "_blank")
+                        
+                            chatmessage.appendChild(br);
+                            chatmessage.appendChild(link);
+                            if (msg.filename.match(/\.(jpeg|jpg|gif|png)$/)) {
+                                let img = document.createElement("img");
+                                let loc = "/uploads/"+msg.filename
+                                img.setAttribute("src", loc);
+                                img.setAttribute("alt",":(");
+
+                                chatmessage.appendChild(img);
+
+                            }
+                        }
+
+                        msgconID.appendChild(chatmessage);
+                        // 1000iqmove
+                        // hashObject(chatmessage).then(hash => {
+                            
+
+                        //     if (nw == hash) {
+                        //         console.log("same "+hash+" --- ",nw)
+                        //         nw = hash;
+
+                        //     }else if (nw != 0) {
+                        //         if (nw != hash) {
+                        //         console.log("df "+hash+" -- "+nw)
+                        //         msgconID.scrollTop = msgconID.scrollHeight;
+                        //         nw = hash;
+
+                        //         }
+                        //     }
+                        //     nw = hash;
+                        // });
+
+                    });
+
+               
+                })
+              
+        }
+
+        // 2sec
+        setInterval(loadmsg, 2000);
+        loadmsg();
+    </script>
+
+<!-- 
+  , _   _____    
+ /|/ \      /    
+  |   |    /     
+  |   |   /|   | 
+  |   |_//  \_/|/
+              /| 
+              \| 
+-->
+
+</body> 
+</html> 
